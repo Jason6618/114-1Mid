@@ -43,6 +43,44 @@ http.createServer((req, res) => {
   let fileOtherFile = '';
 
   // Switch根據不同路由要寫的部分
+switch (req.url) {
+  // 首頁路由（http://localhost:3000/）
+
+  // 當使用者進入根目錄「/」時，
+  // 將要回傳的 EJS 模板設定為 index.ejs（首頁畫面）
+    case '/':
+      filePath = '/index.ejs';
+      break;
+  // 其他所有情況（預設分支）
+  // 如果網址不是「/」或「/calculator」，
+  // 就要判斷是不是在請求「靜態資源」。
+  // 例如：
+  //   /style.css
+  //   /script.js
+  //   /logo.png
+  //   /banner.jpg
+  // 若是以上這些，代表使用者只是要載入前端資源，不是進入頁面。
+
+    case '/calculator':
+      //當使用者請求/calculator網址/index2.ejs這個頁面。
+      filePath = '/index2.ejs';
+      break;
+
+    default:
+      //如果不是/calculator（default區塊
+      if (req.url.endsWith('.css') || req.url.endsWith('.js') || req.url.endsWith('.png') || req.url.endsWith('.jpg')) {
+        //判斷請求是否要拿靜態檔案，例如.css、.js、圖片等。
+        // 如果是，就把該資源路徑記錄到fileOtherFile。
+        // 若是靜態資源，就記錄它的檔案路徑
+        fileOtherFile = req.url;
+      } else {
+        //如果不是靜態檔，也沒有對應的路由（例如/about、/home等），
+        // 就代表請求的網址不存在→ 顯示404 頁( index3.ejs
+        // 否則表示請求的網址不存在 → 顯示 404 頁面
+        filePath = '/index3.ejs'; // 404 頁面
+      }
+      break;
+  }
 
 
 

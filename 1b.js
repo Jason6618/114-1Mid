@@ -21,7 +21,11 @@
  *   輸出: ["mouse"]
  */
 function getLowStock(products) {
- 
+ const lowStockItems = products
+    .filter(item => item.stock < 10)
+    .map(item => item.name);
+
+  console.log(`庫存少於 10 的項目： [ '${lowStockItems.join("', '")}' ]`);
 }
 
 
@@ -43,7 +47,25 @@ function getLowStock(products) {
  *   結果: [{ name: "mouse", stock: 15 }]
  */
 function updateStock(products, updates) {
-  
+  const updatePairs = updates.split(',');
+
+  // 逐一處理每組更新
+  updatePairs.forEach(pair => {
+    const [name, stockStr] = pair.split(':');
+    const stock = parseInt(stockStr);
+
+    // 尋找 products 中對應名稱的項目並更新
+    for (let item of products) {
+      if (item.name === name.trim()) {
+        item.stock = stock;
+      }
+    }
+  });
+
+  // 更新後輸出所有產品的庫存
+  products.forEach(item => {
+    console.log(`${item.name}  的庫存：  ${item.stock}`);
+  });
 }
 
 
@@ -74,7 +96,7 @@ console.log("==========================================");
 
 const lowStockItems = getLowStock(products);
 console.log("庫存少於 10 的商品：", lowStockItems);
-console.log("預期結果：['mouse', 'monitor']");
+
 
 // 檢查結果是否正確
 let isCorrect = true;
@@ -94,10 +116,13 @@ console.log("==========================================");
 console.log("(b) 測試 updateStock - 批次更新庫存");
 console.log("==========================================");
 
-const updates = {
-  mouse: 15,
-  monitor: 20
-};
+function getLowStock(products) {
+  const lowStockItems = products
+    .filter(item => item.stock < 10)
+    .map(item => item.name);
+
+  console.log(`庫存少於 10 的項目： [ '${lowStockItems.join("', '")}' ]`);
+}
 
 console.log("要更新的商品：", updates);
 console.log("");
